@@ -11,8 +11,8 @@ export const getAllFoodItems = async (req, res) => {
 }
 
 export const getFoodItem = async (req, res) => {
-    const {_id }= req.params.id
-    const Item = await Food.findById(_id)
+    const id = req.params.id
+    const Item = await Food.findById({_id: id})
     res.status(200).json(Item)
 }
 
