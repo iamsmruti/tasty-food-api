@@ -1,15 +1,19 @@
 import Food from '../models/Food.js'
 
 export const getAllFoodItems = async (req, res) => {
-    const foods = await Food.find({})
-    res.status(200).json(foods)
+    try {
+        const posts = await Food.find()
+
+        res.status(200).json(posts)
+    } catch (err) {
+        res.status(404).json({message: err.message})
+    }
 }
 
 export const getFoodItem = async (req, res) => {
-    const id = req.params.id
-    const foodItem = await Food.findById(id)
-
-    res.status(200).json(foodItem)
+    const {_id }= req.params.id
+    const Item = await Food.findById(_id)
+    res.status(200).json(Item)
 }
 
 export const createFoodItem = async (req, res) => {
@@ -25,13 +29,10 @@ export const createFoodItem = async (req, res) => {
 }
 
 export const updateFoodItem = async (req, res) => {
-    const id = req.params.id
-    const item = req.body
-    try {
-        const newItem = await Food.findByIdAndUpdate(id, item)
-        res.status(200).json(newItem)
-    } catch (err) {
-        res.status(404).json(err.message)
-    }
-}
+    const {_id} = req.params.id
 
+    const Item = await Food.findById(_id)
+    const updatedPost = await Food.findByIdAndUpdate(_id, Item, {new : true})
+
+    res.json(updatedPost)
+}
